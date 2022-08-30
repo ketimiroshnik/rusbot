@@ -113,14 +113,17 @@ def delete_dublicats(kod_name):
         e = data['tasks'][kod_name][i]
         x, y, z = e['question'], e["response"], e['comment']
         if (x, y, z) not in mas:
-            mas.append((x, y, x))
+            mas.append((x, y, z))
         else:
             print(x, y, x)
     res = []
     for x, y, z in mas:
         e = {}
+
         e['question'], e["response"], e['comment'] = x, y, z
+        res.append(e)
     data['tasks'][kod_name] = res
+    print(res)
     print(f'{kod_name} complited. do you agree')
     if input() != 'ok':
         print('canceled')
@@ -137,9 +140,6 @@ def delete_all_dublicats():
         data = json.loads(file_content)
     for kod_name in data['tasks']:
         delete_dublicats(kod_name)
-
-
-delete_all_dublicats()
 
 
 

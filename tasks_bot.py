@@ -1,5 +1,6 @@
 import random
 import json
+from asyncio import tasks
 
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import Updater, MessageHandler, Filters, ConversationHandler
@@ -22,7 +23,18 @@ def get_data():
 
 
 def start(update, context):
-    markup = ReplyKeyboardMarkup([list(data['tasks_info'])], one_time_keyboard=True, resize_keyboard=True)
+    tasks = sorted(list(data['tasks_info']))
+    mas = []
+    now = []
+    for e in tasks:
+        now.append(e)
+        if len(now) == 2:
+            mas.append(now)
+            now = []
+    if now:
+        mas.append(now)
+
+    markup = ReplyKeyboardMarkup(mas, one_time_keyboard=True, resize_keyboard=True)
     update.message.reply_text("Привет! Я провожу тесты по заданиям ЕГЭ")
     update.message.reply_text("Выбери задание", reply_markup=markup)
     return 1
