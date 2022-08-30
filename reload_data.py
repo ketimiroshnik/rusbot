@@ -100,3 +100,46 @@ def create_new():
     print('ready')
 
 
+def delete_dublicats(kod_name):
+    with open('data/tests.json') as f:
+        file_content = f.read()
+        data = json.loads(file_content)
+    if kod_name not in data['tasks']:
+        print('failed')
+        return
+    mas = []
+    ind = []
+    for i in range(len(data['tasks'][kod_name])):
+        e = data['tasks'][kod_name][i]
+        x, y, z = e['question'], e["response"], e['comment']
+        if (x, y, z) not in mas:
+            mas.append((x, y, x))
+        else:
+            print(x, y, x)
+    res = []
+    for x, y, z in mas:
+        e = {}
+        e['question'], e["response"], e['comment'] = x, y, z
+    data['tasks'][kod_name] = res
+    print(f'{kod_name} complited. do you agree')
+    if input() != 'ok':
+        print('canceled')
+        return
+    with open('data/tests.json', 'w') as f:
+        json.dump(data, f)
+    print(data)
+    print('ready', kod_name)
+
+
+def delete_all_dublicats():
+    with open('data/tests.json') as f:
+        file_content = f.read()
+        data = json.loads(file_content)
+    for kod_name in data['tasks']:
+        delete_dublicats(kod_name)
+
+
+delete_all_dublicats()
+
+
+
