@@ -1,22 +1,20 @@
 import json
 import pymorphy2
 
-
-FILE_NAME = 'data/'
-
+FILE_NAME = 'data/.txt'
 
 
-def f0(): #задание 4
+def f0():  # задание 4
     pass
 
 
-def f1(): #задание 10
+def f1():  # задание 10
     pass
 
 
-def f2(): # задание7 - мне ч
+def f2():  # задание7 - мне ч
     with open(FILE_NAME, encoding='utf8') as f:
-        a = list(map(lambda s:s.strip().lower(), f.readlines()))
+        a = list(map(lambda s: s.strip().lower(), f.readlines()))
     morph = pymorphy2.MorphAnalyzer()
     ans = []
     for e in a:
@@ -53,8 +51,52 @@ def f2(): # задание7 - мне ч
     print('ready')
 
 
-f2()
+def f3():  # задание7 - р п мне ч
+    with open(FILE_NAME, encoding='utf8') as f:
+        a = list(map(lambda s: s.strip().lower(), f.readlines()))
+    ans = []
+    for e in a:
+        e = e.lower()
+        s = e.split(' - ')
+        x, y = s[0], s[1]
+        d = {}
+        d['question'] = x
+        d['response'] = y
+        d['comment'] = ''
+        ans.append(d)
+    print(ans)
+    if input() != 'ok':
+        print('canceled')
+        return
+    with open('data/tests.json') as f:
+        file_content = f.read()
+        data = json.loads(file_content)
+
+    data['tasks']['task7(2)'].extend(ans)
+    print(data)
+    with open('data/tests.json', 'w') as f:
+        json.dump(data, f)
+    print('ready')
 
 
+
+def create_new():
+    task_name = None
+    info = None
+    kod_name = None
+    if task_name is None:
+        print('failed')
+        return
+    with open('data/tests.json') as f:
+        file_content = f.read()
+        data = json.loads(file_content)
+    data['tasks'][kod_name] = []
+    data["tasks_info"][task_name] = {}
+    data["tasks_info"][task_name]['instruction'] = info
+    data["tasks_info"][task_name]['name'] = kod_name
+    with open('data/tests.json', 'w') as f:
+        json.dump(data, f)
+    print(data)
+    print('ready')
 
 
