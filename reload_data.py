@@ -1,18 +1,48 @@
 import json
 import pymorphy2
 
-FILE_NAME = 'data/.txt'
+FILE_NAME = 'data/1.txt'
 
 
-def f0():  # задание 4
+def f4():  # задание 4 (task4)
     pass
 
 
-def f1():  # задание 10
-    pass
+def f10():  # задание 10 (task10)
+    with open(FILE_NAME, encoding='utf8') as f:
+        a = list(map(lambda s: s.strip().lower(), f.readlines()))
+    ans = []
+    for e in a:
+        e = e.lower()
+        if '(' in e:
+            s = e.split()
+            x, y = s[0], ' '.join(s[2:])
+        else:
+            x = e
+            y = ''
+        t = x[:2] + '_' + x[3:]
+        d = {}
+        d['question'] = t
+        d['response'] = x
+        d['comment'] = y
+        ans.append(d)
+    print(ans)
+    print('do you agree?')
+    if input() != 'ok':
+        print('canceled')
+        return
+    with open('data/tests.json') as f:
+        file_content = f.read()
+        data = json.loads(file_content)
+
+    data['tasks']['task10'].extend(ans)
+    print(data)
+    with open('data/tests.json', 'w') as f:
+        json.dump(data, f)
+    print('ready')
 
 
-def f2():  # задание7 - мне ч
+def f7_1():  # задание7 - мн ч  (task7(1))
     with open(FILE_NAME, encoding='utf8') as f:
         a = list(map(lambda s: s.strip().lower(), f.readlines()))
     morph = pymorphy2.MorphAnalyzer()
@@ -36,6 +66,7 @@ def f2():  # задание7 - мне ч
         d['comment'] = y
         ans.append(d)
     print(ans)
+    print('do you agree?')
     if input() != 'ok':
         print('canceled')
         return
@@ -44,14 +75,13 @@ def f2():  # задание7 - мне ч
         data = json.loads(file_content)
 
     data['tasks']['task7(1)'].extend(ans)
-    data['tasks']['task7(1)'] = list(set(data['tasks']['task7(1)']))
     print(data)
     with open('data/tests.json', 'w') as f:
         json.dump(data, f)
     print('ready')
 
 
-def f3():  # задание7 - р п мне ч
+def f7_2():  # задание7 - р п мне ч   (task7(2))
     with open(FILE_NAME, encoding='utf8') as f:
         a = list(map(lambda s: s.strip().lower(), f.readlines()))
     ans = []
@@ -115,7 +145,7 @@ def delete_dublicats(kod_name):
         if (x, y, z) not in mas:
             mas.append((x, y, z))
         else:
-            print(x, y, x)
+            print(x, y, z)
     res = []
     for x, y, z in mas:
         e = {}
@@ -141,5 +171,5 @@ def delete_all_dublicats():
     for kod_name in data['tasks']:
         delete_dublicats(kod_name)
 
-
+f10()
 

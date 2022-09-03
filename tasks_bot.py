@@ -22,6 +22,11 @@ def get_data():
     return data
 
 
+def convert_answer(text):
+    text = text.replace('ё', 'е')
+    return text
+
+
 def start(update, context):
     tasks = sorted(list(data['tasks_info']))
     mas = []
@@ -41,8 +46,8 @@ def start(update, context):
 
 
 def begin(update, context):
-    res = update.message.text
-    if res.lower() in list(data['tasks_info']):
+    res = convert_answer(update.message.text)
+    if res in list(data['tasks_info']):
         task = data['tasks_info'][res.lower()]
         context.user_data["right"] = 0
         context.user_data["count"] = 0
@@ -62,7 +67,7 @@ def begin(update, context):
 
 
 def ques(update, context):
-    res = update.message.text
+    res = convert_answer(update.message.text)
     if res == context.user_data["ques"][0]['response']:
         context.user_data["right"] += 1
         context.user_data["count"] += 1
